@@ -1,10 +1,11 @@
-from . import Article
+from Article import Article  
+
 class Author:
-    _all_authors = []
+    authors = []
     
     def __init__(self, name):
         self._name = name
-        Author._all_authors.append(self)
+        Author.authors.append(self)
         self._articles = []
         
     def name(self):
@@ -26,4 +27,5 @@ class Author:
 
     @classmethod
     def all(cls):
-        return cls._all_authors
+        return cls.authors  
+
