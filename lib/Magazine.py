@@ -51,15 +51,7 @@ class Magazine:
 
  
 
-    @classmethod
-    def find_by_name(cls, name):
-        return next((magazine for magazine in cls.magazines if magazine.name() == name), None)
+ 
 
-    def article_titles(self):
-        return [article.title() for article in self._articles]
 
-    def contributing_authors(self):
-        authors = [article.author() for article in self._articles]
-        author_count = {author: authors.count(author) for author in authors}
-        return [author for author, count in author_count.items() if count > 2]
    
