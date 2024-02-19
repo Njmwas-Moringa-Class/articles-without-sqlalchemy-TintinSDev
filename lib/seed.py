@@ -67,7 +67,6 @@ def print_all_magazines():
         print(magazine)
 
 def main():
-    # Adding sample data
     author1 = Author("Jane Doe")
     author2 = Author("Jane Doe")
 
@@ -89,7 +88,7 @@ def main():
         print("4. Print Magazines")
         print("5. Exit")
 
-        choice = input("Enter your choice (1/2/3/4/5): ")
+        choice = input("Enter your option: ")
 
         if choice == "1":
             add_article()
