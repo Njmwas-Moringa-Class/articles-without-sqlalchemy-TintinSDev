@@ -9,7 +9,7 @@ class Article:
         self._title = title
         self.__class__.articles.append(self)
         magazine.add_published_article(self)
-        author.add_authored_article(self)
+        author._authored_articles(self)
 
     @property
     def title(self):

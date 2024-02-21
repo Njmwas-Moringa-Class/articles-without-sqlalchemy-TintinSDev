@@ -5,10 +5,11 @@ class Author:
     
     def __init__(self, name):
         self._name = name
-        self.__class__.authors.append(self)
         self._authored_articles = []
+        self.__class__.authors.append(self)
         
-      @property
+        
+    @property
     def name(self):
         return self._name
 

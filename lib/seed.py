@@ -1,114 +1,98 @@
-# seed.py
-
 from Author import Author
 from Magazine import Magazine
 from Article import Article
 
+def display_options():
+    print("\nOptions:")
+    print("1. Add Author")
+    print("2. Add Magazine")
+    print("3. Add Article")
+    print("4. Get Author Info")
+    print("5. Get Magazine Info")
+    print("6. Print All Authors")
+    print("7. Print All Magazines")
+    print("8. Exit")
+
+def add_author():
+    author_name = input("Enter author's name: ")
+    Author(author_name)
+    print(f"Author '{author_name}' added.")
+
+def add_magazine():
+    magazine_name = input("Enter magazine name: ")
+    magazine_category = input("Enter magazine category: ")
+    Magazine(magazine_name, magazine_category)
+    print(f"Magazine '{magazine_name}' added.")
+
 def add_article():
-    try:
-        author_name = input("Enter author's name: ")
-        magazine_name = input("Enter magazine name: ")
-        magazine_category = input("Enter magazine category: ")
-        article_title = input("Enter article title: ")
+    author_name = input("Enter author's name: ")
+    magazine_name = input("Enter magazine name: ")
+    magazine_category = input("Enter magazine category: ")
+    article_title = input("Enter article title: ")
 
-        author = next((a for a in Author.authors if a.name == author_name), None)
-        if not author:
-            author = Author(author_name)
+    author = Author.find_or_create(author_name)
+    magazine = Magazine.find_or_create(magazine_name, magazine_category)
 
-        magazine = Magazine.find_by_name(magazine_name)
-        if not magazine:
-            magazine = Magazine(magazine_name, magazine_category)
+    author.add_article(magazine, article_title)
+    print(f"Article '{article_title}' added to {magazine_name} by {author_name}.")
 
-        author.add_article(magazine, article_title)
+def get_author_info():
+    author_name = input("Enter author's name: ")
+    author = Author.find_by_name(author_name)
 
-        print(f"Article '{article_title}' added to {magazine_name} by {author_name}.")
-
-    except Exception as e:
-        print(f"Error adding article: {e}")
-        print("An error occurred. Please try again.")
+    if author:
+        print(f"Author Info:\nName: {author.name}")
+        print(f"Articles: {[article.title for article in author.articles()]}")
+        print(f"Magazines: {[magazine.name for magazine in author.magazines()]}")
+        print(f"Topic Areas: {author.topic_areas()}")
+    else:
+        print(f"Author '{author_name}' not found.")
 
 def get_magazine_info():
-    try:
-        magazine_name = input("Enter magazine name: ")
-        magazine = Magazine.find_by_name(magazine_name)
+    magazine_name = input("Enter magazine name: ")
+    magazine = Magazine.find_by_name(magazine_name)
 
-        if magazine:
-            print(f"Magazine Info:\n{magazine}")
-            print(f"Contributors: {[author.name for author in magazine.contributors()]}")
-            print(f"Article Titles: {Magazine.article_titles(magazine_name)}")
-            print(f"Contributing Authors (more than 2 articles): {magazine.contributing_authors()}")
-        else:
-            print(f"Magazine '{magazine_name}' not found.")
+    if magazine:
+        print(f"Magazine Info:\n{magazine}")
+        print(f"Contributors: {[author.name for author in magazine.contributors()]}")
+        print(f"Article Titles: {magazine.article_titles()}")
+        print(f"Contributing Authors (more than 2 articles): {magazine.contributing_authors()}")
+    else:
+        print(f"Magazine '{magazine_name}' not found.")
 
-    except Exception as e:
-        print(f"Error getting magazine info: {e}")
-        print("An error occurred. Please try again.")
-
-def update_magazine_info():
-    try:
-        magazine_name = input("Enter magazine name: ")
-        magazine = Magazine.find_by_name(magazine_name)
-
-        if magazine:
-            key = input("Enter additional information key: ")
-            value = input("Enter additional information value: ")
-            magazine.update_info(key, value)
-            print(f"Additional information updated for {magazine_name}.")
-        else:
-            print(f"Magazine '{magazine_name}' not found.")
-
-    except Exception as e:
-        print(f"Error updating magazine info: {e}")
-        print("An error occurred. Please try again.")
+def print_all_authors():
+    print("\nAll Authors:")
+    for author in Author.all():
+        print(f"{author.name}")
 
 def print_all_magazines():
-    print("\nMagazines:")
+    print("\nAll Magazines:")
     for magazine in Magazine.all():
         print(magazine)
 
 def main():
-    author1 = Author("Jane Doe")
-    author2 = Author("Jane Doe")
-
-    magazine1 = Magazine("Tech Weekly", "Technology")
-    magazine2 = Magazine("Science Monthly", "Science")
-
-    author1.add_article(magazine1, "The Future of AI")
-    author1.add_article(magazine1, "Advancements in Robotics")
-    author2.add_article(magazine1, "The Impact of Quantum Computing")
-
-    author2.add_article(magazine2, "Exploring Black Holes")
-    author2.add_article(magazine2, "The Search for Extraterrestrial Life")
-
     while True:
-        print("\nOptions:")
-        print("1. Add Article")
-        print("2. Get Magazine Info")
-        print("3. Update Magazine Info")
-        print("4. Print Magazines")
-        print("5. Exit")
-
-        choice = input("Enter your option: ")
+        display_options()
+        choice = input("Enter your choice (1-8): ")
 
         if choice == "1":
-            add_article()
+            add_author()
         elif choice == "2":
-            get_magazine_info()
+            add_magazine()
         elif choice == "3":
-            update_magazine_info()
+            add_article()
         elif choice == "4":
-            print_all_magazines()
+            get_author_info()
         elif choice == "5":
+            get_magazine_info()
+        elif choice == "6":
+            print_all_authors()
+        elif choice == "7":
+            print_all_magazines()
+        elif choice == "8":
             break
         else:
-            print("Invalid choice. Please enter 1, 2, 3, 4, or 5.")
-
-        # Call get_magazine_info after each operation to see the updated information
-        get_magazine_info()
+            print("Invalid choice. Please enter 1, 2, 3, 4, 5, 6, 7, or 8.")
 
 if __name__ == "__main__":
-    try:
-        main()
-    except Exception as e:
-        print(f"Unhandled exception: {e}")
-        print("An unexpected error occurred. Please check the logs.")
+    main()
