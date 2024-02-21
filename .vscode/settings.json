@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "./Project/task_manager",
+        "./lib"
+    ]
+}
